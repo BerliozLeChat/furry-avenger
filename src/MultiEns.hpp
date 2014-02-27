@@ -1,4 +1,4 @@
-/* 
+/*
    Fichier MultiEns.hpp
 
    Définition du type MultiEns
@@ -14,18 +14,19 @@ class MultiEnsemble{
 
 
 	private :
-		
+
 		struct _maille{
 			T elt;
-			_maille * suivant;	
+			_maille * suivant;
 		};
 		typedef struct _maille _maille;
-		
+
 		_maille * tete;
 		int nbElement;
 
 	public :
 		MultiEnsemble();//constructeur
+		MultiEnsemble(T tab[]); // constructeur avec liste en parametre
 		void ajouter(T elt);//ajoute un élément
 		void oteUn(T elt);//ote l'élément passé en paramètre
 		void oteTous(T elt);//ote tous les éléments elt de l'ensemble
@@ -40,7 +41,7 @@ class MultiEnsemble{
 
 
 /******************************************************************************/
-#include "MultiEns.tpp"
+#include "MultiEns.cpp"
 #endif // MULTIENS_HPP
 
 
