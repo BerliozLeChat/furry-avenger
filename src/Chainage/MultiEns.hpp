@@ -26,8 +26,8 @@ class MultiEnsemble{
 
 	public :
 		MultiEnsemble();//constructeur
-		MultiEnsemble(T tab[]); // constructeur avec liste en parametre
 		void ajouter(T elt);//ajoute un élément
+		void afficher(); // permet d'afficher le multi Ensemble
 		void oteUn(T elt);//ote l'élément passé en paramètre
 		void oteTous(T elt);//ote tous les éléments elt de l'ensemble
 		bool estVide();//vrai si est vide

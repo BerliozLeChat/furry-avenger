@@ -4,7 +4,6 @@
 * Authors : Francois Hallereau & Sébastien Vallée
 */
 
-#include "AList.hpp"
 
 template <typename K, typename V>
 AList<K,V>::AList(){
@@ -19,28 +18,55 @@ AList<K,V>::~AList(){
 }
 template <typename K, typename V>
 void AList<K,V>::associer(K clf,V valr){
-	bool trouve=false;
 	maillon<K,V> * courant = this->tete;
-		while(courant != NULL && trouve==false){
-				if(courant->clf==clf){
-					trouve=true;
-				}
-				else{
-					courant = courant->suivant;
-				}
-		}
-		if(trouve==false){
-			maillon<K,V> * mama;
-			mama->suivant=NULL;
-			mama->clf=clf;
-			mama->elt=valr;
-			this->queue=mama;
-			this->nb++;
-		}
-		else{
-			courant->elt=valr;
+	if(courant ==NULL){
+		maillon<K,V> * mama = new maillon<K,V>();
+		mama->suivant=NULL;
+		mama->clf=clf;
+		mama->elt=valr;
+		
+		this->tete = mama;
+		this->queue = mama;
+		
+		this->nb = this->nb+1;
+		
+	}
+	else{
+		bool trouve=false;
+
+			while(courant != NULL && trouve==false){
+					if(courant->clf==clf){
+						trouve=true;
+					}
+					else{
+						courant = courant->suivant;
+					}
+			}
+			if(trouve==false){
+				maillon<K,V> * mama = new maillon<K,V>();
+				mama->suivant=NULL;
+				mama->clf=clf;
+				mama->elt=valr;
+				this->queue=mama;
+				this->nb++;
+			}
+			else{
+				courant->elt=valr;
+			}
 		}
 }
+
+template <typename K, typename V>
+void AList<K,V>::afficher(){
+		maillon<K,V> * pointeur = this->tete;
+		while(pointeur!=NULL){
+			cout<<"("<<pointeur->clf<<","<<pointeur->elt<<"),";
+			pointeur = pointeur->suivant;
+			}
+		cout<<endl;
+		
+}
+
 
 template <typename K, typename V>
 bool AList<K,V>::estALVide(){
@@ -63,8 +89,6 @@ V AList<K,V>::valeurAssociee(K clf){
 		if(trouve==true){
 				return courant->elt;
 			}
-		else
-			return NULL;
 	}
 }
 template <typename K, typename V>
@@ -115,7 +139,7 @@ bool AList<K,V>::estClef(K cle){
 		}
 }
 template <typename K, typename V>
-void AList<K,V>::trousseau(K* clfs, int N ){
+void AList<K,V>::trousseau(vector<K> clfs, int N ){
 		if(this->nb!=0){
 				maillon<K,V> * courant=this->tete;
 				N=0;

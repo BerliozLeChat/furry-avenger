@@ -7,20 +7,26 @@
 #ifndef MULTIENS_HPP
 #define MULTIENS_HPP
 
-#include "Hashage.hpp"
+#include <string> // pour le type std::string
 
 template <typename T>
 class MultiEnsemble{
 
 
 	private :
-        Hashage<T,int> ens;
+
+		struct _maille{
+			T elt;
+			_maille * suivant;
+		};
+		typedef struct _maille _maille;
+
+		_maille * tete;
+		int nbElement;
 
 	public :
 		MultiEnsemble();//constructeur
-		~MultiEnsemble();//destructeur
 		void ajouter(T elt);//ajoute un élément
-		void afficher();// permet d'afficher le multi Ensemble
 		void oteUn(T elt);//ote l'élément passé en paramètre
 		void oteTous(T elt);//ote tous les éléments elt de l'ensemble
 		bool estVide();//vrai si est vide
@@ -31,11 +37,10 @@ class MultiEnsemble{
 		bool egal(MultiEnsemble me);//vrai si les ensembles sont équivalents
 };
 
-#include "MultiEns.cpp"
 
 
 /******************************************************************************/
-
+#include "MultiEns.cpp"
 #endif // MULTIENS_HPP
 
 
