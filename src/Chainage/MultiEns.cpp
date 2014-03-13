@@ -20,6 +20,17 @@ template <typename T>
 		this->nbElement=0;
 	}
 	
+template <typename T>
+	MultiEnsemble<T>::MultiEnsemble(T tab[]){//constructeur
+
+		this->nbElement=0;
+		this->tete=NULL;
+		for (int i = 0; i <= (int)sizeof(tab); i++){
+			this->ajouter(tab[i]);
+		}
+
+	}
+	
 
 
 template <typename T>
@@ -76,6 +87,7 @@ template <typename T>
 							this->tete=pointeur->suivant;
 							delete(pointeur);
 							this->nbElement=this->nbElement-1;
+							trouve=true;
 						}
 					}
 					pointeurPrecedent=pointeur;
@@ -134,7 +146,7 @@ template <typename T>
 	}
 	template <typename T>
 	void MultiEnsemble<T>::fusionner(MultiEnsemble me){//fusionne deux ensembles
-			_maille * pointeur =  me->tete;
+			_maille * pointeur =  me.tete;
 			
 			while(pointeur!=NULL){
 					this->ajouter(pointeur->elt);
@@ -144,10 +156,10 @@ template <typename T>
 	}
 	template <typename T>
 	MultiEnsemble<T> MultiEnsemble<T>::intersecte(MultiEnsemble me){//donne l'intersection de deux ensembles
-			MultiEnsemble<T> iste = new MultiEnsemble();
+			MultiEnsemble<T> * iste = new MultiEnsemble<T>();
 			
 			_maille * pointeurThis = this->tete;
-			_maille * pointeurMe = me->tete;
+			_maille * pointeurMe = me.tete;
 			
 			while(pointeurThis!=NULL){
 				T recherche = pointeurThis->elt;
@@ -156,54 +168,43 @@ template <typename T>
 						if(pointeurMe->elt==recherche){
 								trouve = true;
 								iste->ajouter(recherche);
-								me->oteUn(recherche);
+								me.oteUn(recherche);
 								/*******modifier le MultiEnsemble passé en paramètre ?? *******/
 						}else
 							pointeurMe = pointeurMe->suivant;
 					}
 					
-					pointeurMe = me->tete;
+					pointeurMe = me.tete;
 					pointeurThis = pointeurThis->suivant;
 			}
+			cout<<"blabla";
+			me.afficher();
+			cout<<endl;
 			
-			return iste;
+			return *iste;
 			
 			
 	}
 	template <typename T>
 	void MultiEnsemble<T>::enleve(MultiEnsemble me){//enlève l'intersection de deux ensembles
-			MultiEnsemble<T> iste = new MultiEnsemble();
 			
-			_maille * pointeurThis = this->tete;
-			_maille * pointeurMe = me->tete;
+			_maille * pointeurMe = me.tete;
 			
-			while(pointeurThis!=NULL){
-				T recherche = pointeurThis->elt;
-				bool trouve=false;
-					while(pointeurMe!=NULL && trouve == false){
-						if(pointeurMe->elt==recherche){
-								trouve = true;
-								iste->ajouter(recherche);
-								this->oteUn(recherche);
-						}else
-							pointeurMe = pointeurMe->suivant;
-					}
-					
-					pointeurMe = me->tete;
-					pointeurThis = pointeurThis->suivant;
+			while(pointeurMe!=NULL){
+				this->oteUn(pointeurMe->elt);
+				pointeurMe = pointeurMe->suivant;
 			}
-			
 	}
 	template <typename T>
 	bool MultiEnsemble<T>::egal(MultiEnsemble me){//vrai si les ensembles sont équivalents
-			MultiEnsemble<T> iste = new MultiEnsemble();
+			MultiEnsemble<T> * iste = new MultiEnsemble<T>();
 			
 			_maille * pointeurThis = this->tete;
-			_maille * pointeurMe = me->tete;
+			_maille * pointeurMe = me.tete;
 			
 			bool resultat=false;
 			
-			if(this->nbElement == me->nbElement){
+			if(this->nbElement == me.nbElement){
 				bool trouve;
 				while(pointeurThis!=NULL){
 					T recherche = pointeurThis->elt;
@@ -212,15 +213,15 @@ template <typename T>
 							if(pointeurMe->elt==recherche){
 									trouve = true;
 									iste->ajouter(recherche);
-									me->oteUn(recherche);
+									me.oteUn(recherche);
 							}else
 								pointeurMe = pointeurMe->suivant;
 						}
 						
-						pointeurMe = me->tete;
+						pointeurMe = me.tete;
 						pointeurThis = pointeurThis->suivant;
 				}
-				if(me->estVide()){
+				if(me.estVide()){
 					resultat = true;
 				}
 			}

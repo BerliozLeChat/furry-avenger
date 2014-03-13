@@ -18,6 +18,7 @@ class MultiEnsemble{
 
 	public :
 		MultiEnsemble();//constructeur
+		MultiEnsemble(T tab[]); // constructeur prenant une liste en parametre
 		~MultiEnsemble();//destructeur
 		void ajouter(T elt);//ajoute un élément
 		void afficher();// permet d'afficher le multi Ensemble
