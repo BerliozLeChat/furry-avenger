@@ -11,7 +11,6 @@
  // utile pour les fonctions mathématique
 #include <sstream> // pour les conversions en chaine
 #include <iostream>
-#include <algorithm> 
 
 
 template <typename T>
@@ -81,7 +80,7 @@ bool MultiEnsemble<T>::estVide(){//Vrai si est vide
 template <typename T>
 int MultiEnsemble<T>::nbOcc(T elt){//Retourne le nombre d'occurence d'elt
     int nb;
-    if(this->ens.estCle(elt))
+    if(this->ens.estClef(elt))
         nb = this->ens.valeurAssociee(elt);
     else
         nb = 0;
@@ -90,16 +89,17 @@ int MultiEnsemble<T>::nbOcc(T elt){//Retourne le nombre d'occurence d'elt
 
 template <typename T>
 void MultiEnsemble<T>::fusionner(MultiEnsemble me){//fusionne deux ensembles
-	vector<T> clefs();
+	T * clefs = new T[1000];
 	int N=0;
-	me.ens.trousseau(clefs,&N);
+	int i;
+	me.ens.trousseau(clefs,N);
 	cout<<"{"<<N<<"}"<<endl;
-	for(T clef:clefs){ 
-		if(this->ens.estCle(clef)){
-			this->ens.associer(clef,this->ens.valeurAssociee(clef)+me.ens.valeurAssociee(clef));
+	for(i=0;i<N;++i){ 
+		if(this->ens.estClef(clefs[i])){
+			this->ens.associer(clefs[i],this->ens.valeurAssociee(clefs[i])+me.ens.valeurAssociee(clefs[i]));
 		}
 		else{
-			this->ens.associer(clef,me.ens.valeurAssociee(clef));
+			this->ens.associer(clefs[i],me.ens.valeurAssociee(clefs[i]));
 		}
 	}
 
@@ -107,35 +107,40 @@ void MultiEnsemble<T>::fusionner(MultiEnsemble me){//fusionne deux ensembles
 
 template <typename T>
 MultiEnsemble<T> MultiEnsemble<T>::intersecte(MultiEnsemble me){//donne l'intersection de deux ensembles
-	int N =0;
 	int M =0;	
+	int i;
 	MultiEnsemble<T> * inter = new MultiEnsemble<T>();
-	vector<T> this_clefs();
-	vector<T> me_clefs();
-	vector<T> res;
-	typename vector<T>::iterator iterateur;
-	me.ens.trousseau(me_clefs,&N);
-	this->ens.trousseau(this_clefs,&M);
-	iterateur=set_intersection (this_clefs.begin(), this_clefs.end(), me_clefs.begin(), me_clefs.end(), res.begin());
-	for(iterateur=res.begin(); iterateur!=res.end(); ++iterateur)
-		inter->ens.associer(iterateur,this->ens.valeurAssociee(iterateur)+me.ens.valeurAssociee(iterateur));
-	return inter;
+	T * clefs = new T[1000];
+	this->ens.trousseau(clefs,M);
+	for(i=0;i<M;++i){//pour toutes les clés de this
+		if(me.ens.estClef(clefs[i])){ //on teste si elles sont dans me
+			if(this->ens.valeurAssociee(clefs[i])>me.ens.valeurAssociee(clefs[i])){//on ajoute la cle dans inter avec sa valeur (plus petite occurence des deux MultiEns) 
+				inter->ens.associer(clefs[i],me.ens.valeurAssociee(clefs[i]));
+			}
+			else{
+				inter->ens.associer(clefs[i],this->ens.valeurAssociee(clefs[i]));
+			}
+		}
+		
+	}
+	return *inter;
 }
 
 template <typename T>
 void MultiEnsemble<T>::enleve(MultiEnsemble me){//enlève l'intersection de deux ensembles
 	int occurence;
-	vector<T> clefs();
+	T * clefs = new T[1000];
 	int N=0;
-	me.ens.trousseau(clefs,&N);
+	int i;
+	me.ens.trousseau(clefs,N);
 	cout<<"{"<<N<<"}"<<endl;
-	for(T clef:clefs){ 
-		if(this->ens.estCle(clef)){
-			occurence = this->ens.valeurAssociee(clef)-me.ens.valeurAssociee(clef);
+	for(i=0;i<N;++i){ 
+		if(this->ens.estClef(clefs[i])){
+			occurence = this->ens.valeurAssociee(clefs[i])-me.ens.valeurAssociee(clefs[i]);
 			if(occurence<=0){
-				this->ens.dissocier(clef);
+				this->ens.dissocier(clefs[i]);
 			}else{
-				this->ens.associer(clef,occurence);
+				this->ens.associer(clefs[i],occurence);
 			}
 		}
 	}
@@ -143,5 +148,20 @@ void MultiEnsemble<T>::enleve(MultiEnsemble me){//enlève l'intersection de deux
 
 template <typename T>
 bool MultiEnsemble<T>::egal(MultiEnsemble me){//vrai si les ensembles sont équivalents
-	return true;
+	bool res=true;
+	int i;
+	T * clefs = new T[1000];
+	int N=0;
+	me.ens.trousseau(clefs,N);
+	for(i=0;i<N;++i){ 
+		if(this->ens.estClef(clefs[i])){
+			if(this->ens.valeurAssociee(clefs[i])!=me.ens.valeurAssociee(clefs[i])){
+				res = false;
+			}
+		}
+		else{
+			res=false;
+		}
+	}
+	return res;
 }

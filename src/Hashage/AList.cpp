@@ -139,7 +139,7 @@ bool AList<K,V>::estClef(K cle){
 		}
 }
 template <typename K, typename V>
-void AList<K,V>::trousseau(vector<K> clfs, int N ){
+void AList<K,V>::trousseau(K* clfs, int &N ){
 		if(this->nb!=0){
 				maillon<K,V> * courant=this->tete;
 				N=0;

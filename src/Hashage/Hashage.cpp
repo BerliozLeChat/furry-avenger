@@ -26,7 +26,8 @@ int Hashage<K,V>::hash(K cle) {
         return (cle%TAILLE);
     } else if (typeid(cle) == typeid(float) ) {
         return ( (int)(cle%TAILLE) );
-    }
+    }else
+		return 0;
 }
 //ajoute le couple (clf,valr) ou change la valeur associée à clf s'il y en avait une
 template <typename K,typename V>
@@ -74,14 +75,14 @@ bool Hashage<K,V>::estClef(K cle){
 }
 
 template <typename K,typename V>
-void Hashage<K,V>::trousseau(vector<K> clfs, int N ){
+void Hashage<K,V>::trousseau(K* clfs, int &N ){
     K* temp;
     int i,j,taille;
     int cur = 0; //indice du prochain ajout
     if(! this->estVide() ) {
         for(i = 0; i < TAILLE; i++) { //on parcours toutes les AList de la table de hashage
             temp = new K[100]; //on crée un tableau temporaire stockant les clés de la AList courante
-            this->tab[i].trousseau(temp,taille); //on applique trousseau(...) sur la AList courante
+            this->list[i].trousseau(temp,taille); //on applique trousseau(...) sur la AList courante
             N += taille; //on met à jour la taille de N
 
             for(j = 0; j < taille; j++) { //on parcours le liste des clefs dans le tableau temporaire
