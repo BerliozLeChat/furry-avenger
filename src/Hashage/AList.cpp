@@ -8,7 +8,6 @@
 template <typename K, typename V>
 AList<K,V>::AList(){
 	this->tete = NULL;
-	this->queue=NULL;
 	this->nb=0;
 }
 
@@ -26,19 +25,19 @@ void AList<K,V>::associer(K clf,V valr){
 		mama->elt=valr;
 		
 		this->tete = mama;
-		this->queue = mama;
 		
 		this->nb = this->nb+1;
 		
 	}
 	else{
 		bool trouve=false;
-
+		maillon<K,V> * pointeurPrecedent=NULL;
 			while(courant != NULL && trouve==false){
 					if(courant->clf==clf){
 						trouve=true;
 					}
 					else{
+						pointeurPrecedent=courant;
 						courant = courant->suivant;
 					}
 			}
@@ -47,7 +46,7 @@ void AList<K,V>::associer(K clf,V valr){
 				mama->suivant=NULL;
 				mama->clf=clf;
 				mama->elt=valr;
-				this->queue=mama;
+				pointeurPrecedent->suivant=mama;
 				this->nb++;
 			}
 			else{
@@ -60,9 +59,14 @@ template <typename K, typename V>
 void AList<K,V>::afficher(){
 		maillon<K,V> * pointeur = this->tete;
 		while(pointeur!=NULL){
-			cout<<"("<<pointeur->clf<<","<<pointeur->elt<<"),";
-			pointeur = pointeur->suivant;
-			}
+			if(pointeur->suivant ==NULL)
+				cout<<"("<<pointeur->clf<<","<<pointeur->elt<<").";
+			else
+				cout<<"("<<pointeur->clf<<","<<pointeur->elt<<"),";
+		
+				
+				pointeur = pointeur->suivant;
+		}
 		cout<<endl;
 		
 }
@@ -74,23 +78,23 @@ bool AList<K,V>::estALVide(){
 }
 
 template <typename K, typename V>
-V AList<K,V>::valeurAssociee(K clf){
-	if(this->nb!=0){
-        bool trouve=false;
-		maillon<K,V> * courant = this->tete;
-		while(courant != NULL && trouve==false){
-			if(courant->clf==clf){
-				trouve=true;
+	V AList<K,V>::valeurAssociee(K clf){
+		if(this->nb!=0){
+			bool trouve=false;
+			maillon<K,V> * courant = this->tete;
+			while(courant != NULL && trouve==false){
+				if(courant->clf==clf){
+					trouve=true;
+				}
+				else{
+					courant = courant->suivant;
+				}
 			}
-			else{
-				courant = courant->suivant;
+			if(trouve==true){
+					return courant->elt;
 			}
 		}
-		if(trouve==true){
-				return courant->elt;
-			}
 	}
-}
 template <typename K, typename V>
 void AList<K,V>::dissocier(K clf){
     bool trouve=false;

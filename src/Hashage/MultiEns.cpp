@@ -93,7 +93,6 @@ void MultiEnsemble<T>::fusionner(MultiEnsemble me){//fusionne deux ensembles
 	int N=0;
 	int i;
 	me.ens.trousseau(clefs,N);
-	cout<<"{"<<N<<"}"<<endl;
 	for(i=0;i<N;++i){ 
 		if(this->ens.estClef(clefs[i])){
 			this->ens.associer(clefs[i],this->ens.valeurAssociee(clefs[i])+me.ens.valeurAssociee(clefs[i]));
@@ -133,7 +132,6 @@ void MultiEnsemble<T>::enleve(MultiEnsemble me){//enlève l'intersection de deux
 	int N=0;
 	int i;
 	me.ens.trousseau(clefs,N);
-	cout<<"{"<<N<<"}"<<endl;
 	for(i=0;i<N;++i){ 
 		if(this->ens.estClef(clefs[i])){
 			occurence = this->ens.valeurAssociee(clefs[i])-me.ens.valeurAssociee(clefs[i]);

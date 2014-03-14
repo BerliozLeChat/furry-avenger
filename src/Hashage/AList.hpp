@@ -25,7 +25,6 @@ template <typename K, typename V>
 class AList{
 	private:
 		struct maillon<K,V> * tete;
-		struct maillon<K,V> * queue;
 		int nb;
 
 	public :

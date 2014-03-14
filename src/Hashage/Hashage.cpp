@@ -38,6 +38,7 @@ void Hashage<K,V>::associer(K clf,V valr){
 
 template <typename K,typename V>
 void Hashage<K,V>::afficher(){
+		cout<<endl;
 		for(int i=0; i<TAILLE;++i){
 			if(!this->list[i].estALVide()){
 				cout<<"ligne "<<i<<" :";

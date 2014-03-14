@@ -179,8 +179,6 @@ template <typename T>
 					pointeurMe = copie->tete;
 					pointeurThis = pointeurThis->suivant;
 			}
-			cout<<"blabla";
-			copie->afficher();
 			cout<<endl;
 
 			return *iste;
@@ -216,7 +214,6 @@ template <typename T>
 							if(pointeurMe->elt==recherche){
 									trouve = true;
                                     copie->oteUn(recherche);
-									cout<<"trouve"<<endl;
 							}else
 								pointeurMe = pointeurMe->suivant;
 
