@@ -17,20 +17,6 @@ template <typename T>
 MultiEnsemble<T>::MultiEnsemble(){
 	}//constructeur
 	
-template <typename T>
-	MultiEnsemble<T>::MultiEnsemble(T tab[]){//constructeur
-
-		for (int i = 0; i < sizeof(tab); i++){
-			this->ens.ajouter(tab[i]);
-		}
-
-	}
-
-template <typename T>
-MultiEnsemble<T>::~MultiEnsemble(){
-	
-	}//destructeur
-
 
 template <typename T>
 void MultiEnsemble<T>::ajouter(T elt){//ajoute un élément
@@ -57,10 +43,10 @@ template <typename T>
 void MultiEnsemble<T>::oteUn(T elt){//ote l'élément passé en paramètre
     if(this->ens.estClef(elt)){
         if(this->ens.valeurAssociee(elt)>1){
-            this->ens.associer(elt,this->ens.valeurAssociee(elt)-1);
+            this->ens.associer(elt,this->ens.valeurAssociee(elt)-1);//-1 si il y a plus de 2 occurrences
         }
         else{
-            this->ens.dissocier(elt);
+            this->ens.dissocier(elt);//sinon on supprime la clé
         }
     }
 }
@@ -92,13 +78,13 @@ void MultiEnsemble<T>::fusionner(MultiEnsemble me){//fusionne deux ensembles
 	T * clefs = new T[1000];
 	int N=0;
 	int i;
-	me.ens.trousseau(clefs,N);
+	me.ens.trousseau(clefs,N);//on récupère les clés
 	for(i=0;i<N;++i){ 
-		if(this->ens.estClef(clefs[i])){
-			this->ens.associer(clefs[i],this->ens.valeurAssociee(clefs[i])+me.ens.valeurAssociee(clefs[i]));
+		if(this->ens.estClef(clefs[i])){//si elle est clé
+			this->ens.associer(clefs[i],this->ens.valeurAssociee(clefs[i])+me.ens.valeurAssociee(clefs[i]));//on additionne les valeurs associées
 		}
 		else{
-			this->ens.associer(clefs[i],me.ens.valeurAssociee(clefs[i]));
+			this->ens.associer(clefs[i],me.ens.valeurAssociee(clefs[i]));//sinon on crée la clé
 		}
 	}
 
@@ -131,14 +117,14 @@ void MultiEnsemble<T>::enleve(MultiEnsemble me){//enlève l'intersection de deux
 	T * clefs = new T[1000];
 	int N=0;
 	int i;
-	me.ens.trousseau(clefs,N);
+	me.ens.trousseau(clefs,N); //on récupère les clés de me
 	for(i=0;i<N;++i){ 
-		if(this->ens.estClef(clefs[i])){
-			occurence = this->ens.valeurAssociee(clefs[i])-me.ens.valeurAssociee(clefs[i]);
+		if(this->ens.estClef(clefs[i])){//si elle appartient a this
+			occurence = this->ens.valeurAssociee(clefs[i])-me.ens.valeurAssociee(clefs[i]);//on soustrait les valeurs associées
 			if(occurence<=0){
-				this->ens.dissocier(clefs[i]);
+				this->ens.dissocier(clefs[i]);//si c'est inférieur ou égal a 0 on supprime la clé
 			}else{
-				this->ens.associer(clefs[i],occurence);
+				this->ens.associer(clefs[i],occurence);//sinon  on modifie la valeur associée
 			}
 		}
 	}
@@ -149,10 +135,27 @@ bool MultiEnsemble<T>::egal(MultiEnsemble me){//vrai si les ensembles sont équi
 	bool res=true;
 	int i;
 	T * clefs = new T[1000];
+	//l'galité de 2 ensembles correspond a la double inclusion
+	//on teste l'inclusion dans un sens
 	int N=0;
-	me.ens.trousseau(clefs,N);
+	me.ens.trousseau(clefs,N);//on récupère les clé
 	for(i=0;i<N;++i){ 
-		if(this->ens.estClef(clefs[i])){
+		if(this->ens.estClef(clefs[i])){//si la clé appartient
+			if(this->ens.valeurAssociee(clefs[i])!=me.ens.valeurAssociee(clefs[i])){//on compare les occurrences
+				res = false;
+			}
+		}
+		else{
+			res=false;//la clé n'appartient pas
+		}
+	}
+	
+	//puis dans l'autre
+	N=0;
+	clefs = new T[1000];
+	this->ens.trousseau(clefs,N);
+	for(i=0;i<N;++i){ 
+		if(me.ens.estClef(clefs[i])){
 			if(this->ens.valeurAssociee(clefs[i])!=me.ens.valeurAssociee(clefs[i])){
 				res = false;
 			}

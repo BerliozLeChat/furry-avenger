@@ -13,6 +13,7 @@ int main(){
 		Quentin->ajouter(4);
 		Quentin->ajouter(5);
 		Quentin->ajouter(6);
+		Quentin->ajouter(7);
 		Quentin->ajouter(54);
 
 	MultiEnsemble<int> * Pierre = new MultiEnsemble<int>();
@@ -40,6 +41,7 @@ int main(){
 		Alexis->ajouter(2);
 		Alexis->ajouter(4);
 		Alexis->ajouter(6);
+		Alexis->ajouter(54);
 
 	//debut du traitement//
 	cout<<" [{ Voici nos ensembles de départ : }] "<<endl;
